@@ -19,7 +19,7 @@ function Header() {
                 <nav className="flex gap-3 justify-between align-middle">
                   <Link className="hidden sm:block hover:underline"  to={"/Profile"}>Home </Link>
                   <Link className="hidden sm:block hover:underline"  to={"/About"}>About</Link>
-                  <Link className="hidden sm:block hover:underline"  to={"/SignIn"}>SignIn</Link>
+                  <Link className="hover:underline"  to={"/SignIn"}>SignIn</Link>
                 </nav>
             </div>
         </header>
