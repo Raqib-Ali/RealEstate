@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 function SignUp() {
 
   const [formData, setData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleInput = (e) => {
     setData({
@@ -19,8 +19,7 @@ function SignUp() {
     setLoading(true);
     e.preventDefault();
     setError(null);
-    
-  
+
     const response = await fetch('/api/auth/signup', {
       method: 'POST',
       headers: {
@@ -30,28 +29,29 @@ function SignUp() {
     });
 
     const data = await response.json()
-    
-    if(data.success == false){
-      setError(data.message);     
+
+    if (data.success == false) {
+      setError(data.message);
       setLoading(false);
       return;
-    }else{
+    } else {
       alert(data);
     }
     setLoading(false);
-  
+    navigate("/signIn");
+
   }
 
-
-
   return <>
-    <div className="mx-auto max-w-lg">
+    <div className="mx-auto max-w-lg p-2">
       <h1 className="my-7 text-center text-3xl font-semibold">Sign Up</h1>
       <form onSubmit={(e) => { handleSubmit(e) }} className="flex flex-col gap-4">
         <input required type="text" onChange={(e) => { handleInput(e) }} className="p-3 rounded-lg" placeholder="username" id="username" />
         <input required type="email" onChange={(e) => { handleInput(e) }} className="p-3 rounded-lg" placeholder="email" id="email" />
         <input required type="password" onChange={(e) => { handleInput(e) }} className="p-3 rounded-lg" placeholder="password" id="password" />
-        <button disabled={loading} className="bg-slate-600 text-white rounded-md p-3 hover:opacity-90 disabled:opacity-70">{loading?"Loading":"Submit"}</button>
+        <button disabled={loading} className="bg-slate-600 text-white rounded-md p-3 hover:opacity-90 disabled:opacity-70">
+          {loading ? "Loading..." : "Submit"}
+        </button>
       </form>
       <div className="flex gap-2 mt-3">
         <p>Having an account?</p>
