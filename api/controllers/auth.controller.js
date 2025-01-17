@@ -8,8 +8,8 @@ export const signup = async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
         const hash = await bcrypt.hash(password, 10);
-        const userName = new User({ username, email, password: hash })
-        await userName.save();
+        const user = new User({ username, email, password: hash })
+        await user.save();
         res.status(201).json('User created successfully');
     } catch (error) {
         next(error);
@@ -35,3 +35,33 @@ export const signin = async (req, res, next) => {
     }
 
 };
+
+export const google = async (req, res, next) => {
+
+    try {
+        const { username, email, photo } = req.body;
+        const validate = await User.findOne({ email });
+        if (!validate) {
+            const generatedPassword = Math.random().toString(32).slice(-8)
+            const hash = await bcrypt.hash(generatedPassword, 10);
+            const user = new User({ username: username, email, password: hash, photo })
+            await user.save();
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+            const { password: pass, ...rest } = user._doc
+            res.cookie('access_token', token, { httpOnly: true })
+                .status(200)
+                .json(rest);
+        } else {
+            const token = jwt.sign({ id: validate._id }, process.env.JWT_SECRET);
+            const { password: pass, ...rest } = validate._doc
+            res.cookie('access_token', token, { httpOnly: true })
+                .status(200)
+                .json(rest);
+        }
+
+    } catch (error) {
+        next(error);
+    }
+
+};
+
