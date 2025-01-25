@@ -21,11 +21,14 @@ export const userSlice = createSlice({
     signInFailure: (state, action) => {
       state.error = action.payload;
       state.loading = false;
+    },
+    updateState: (state, action) => {
+      state.currentUser = action.payload;
     }
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { signInStart, signInSuccess, signInFailure } = userSlice.actions;
+export const { signInStart, signInSuccess, signInFailure, updateState } = userSlice.actions;
 
 export default userSlice.reducer;
