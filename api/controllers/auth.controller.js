@@ -1,7 +1,8 @@
 import User from "../models/user.model.js";
-import bcrypt from "../../node_modules/bcrypt/bcrypt.js"
 import { errorHandler } from "../util.js/error.js";
 import jwt from 'jsonwebtoken';
+ import bcrypt from "../../node_modules/bcrypt/bcrypt.js"
+
 
 export const signup = async (req, res, next) => {
 
@@ -27,7 +28,7 @@ export const signin = async (req, res, next) => {
         if (!validPassword) return next(errorHandler(404, 'Wrong Password!'));
         const token = jwt.sign({ id: validate._id }, process.env.JWT_SECRET);
         const { password: pass, ...rest } = validate._doc
-        res.cookie('access_token', token, { httpOnly: true })
+        res.cookie('access_token', token, {httpOnly: true, secure: false})
             .status(200)
             .json(rest);
     } catch (error) {

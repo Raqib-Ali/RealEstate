@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import userRotes from './routes/user.route.js'
 import authRoutes from "./routes/auth.route.js";
 import cors from 'cors'
+import cookieParser from "cookie-parser";
+
 
 dotenv.config();  
 
@@ -15,14 +17,11 @@ mongoose.connect(process.env.MONGO).then(()=>{
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 
-app.listen(3000, ()=>{
-    console.log("Server is listening on port 3000!");
-})
- 
-app.use('/api/user' , userRotes); 
 app.use('/api/auth', authRoutes);
+app.use('/api/user' , userRotes); 
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
@@ -33,3 +32,7 @@ app.use((err, req, res, next) => {
         message
     });
 });
+
+app.listen(3000, ()=>{
+    console.log("Server is listening on port 3000!");
+})
