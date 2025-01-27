@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateStart, updateSuccess, updateFailure, deleteStart, deleteFailure, deletesuccess, signOutStart, signOutFailure, signOutSuccess } from "../redux/user/userSlice";
+import { Link, useNavigate,  } from "react-router-dom";
 
 function Profile() {
     const dispatch = useDispatch();
@@ -96,12 +97,14 @@ function Profile() {
                 <input className="p-3 rounded-lg border" id="username" placeholder="Username" type="text" onChange={(e) => { handleChange(e) }} defaultValue={currentUser?.username} />
                 <input className="p-3 rounded-lg border" id="email" placeholder="Email" type="email" onChange={(e) => { handleChange(e) }} defaultValue={currentUser?.email} />
                 <input className="p-3 rounded-lg border" id="password" onChange={(e) => { handleChange(e) }} placeholder="Password" type="password" />
-                <button disabled={loading} className="p-3 rounded-lg bg-slate-600 text-white uppercase">
+                <button disabled={loading} className="p-3 rounded-lg bg-slate-600 text-white uppercase hover:opacity-90">
                     {
                         (loading) ? "Loading..." : "Update"
                     }
                 </button>
+                <Link className="bg-green-600 text-white uppercase p-3 rounded-lg text-center hover:opacity-90" to={'/createListing'}>Create Listing</Link>
             </form>
+            
             <div className="flex justify-between mt-2">
                 <span onClick={handleDeleteUser} className="text-red-600">Delete Account</span>
                 <span onClick={handleSignOut} className="text-red-600 cursor-pointer">Sign out</span>
