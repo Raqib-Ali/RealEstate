@@ -37,7 +37,6 @@ function SignIn() {
       dispatch(signInFailure(data.message))
       return;
     } 
-    console.log(data);
     // setLoading(false);
     dispatch(signInSuccess(data))
     navigate('/')
