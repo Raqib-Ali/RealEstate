@@ -33,6 +33,7 @@ const CreateListing = () => {
 
                 if (response.error) {
                     setError(response.error.message)
+                    
                     setLoding(false)
                 } else {
                     const { data } = supabase
