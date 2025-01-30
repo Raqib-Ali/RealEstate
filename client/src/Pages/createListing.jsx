@@ -1,5 +1,57 @@
+// import { createClient } from '@supabase/supabase-js'
+import { useState } from 'react';
+import { supabase } from '../suprabase';
+
+// const projectURL = 'https://rmwsqsqemjcuftsqrwxb.supabase.co';
+// const anonkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtd3Nxc3FlbWpjdWZ0c3Fyd3hiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczODE1OTE0OSwiZXhwIjoyMDUzNzM1MTQ5fQ.FAcpgnv1lv6uGXqwtOX5Ky4g7rU6T2Zf7Y-e5vL_yEI'
+
+// Create a single supabase client for interacting with your database
+// const supabase = createClient(projectURL, anonkey)
+
 
 const CreateListing = () => {
+
+    const [image, setImage] = useState();
+    const [formData, setFormData] = useState({
+        imgUrls: [],
+    });
+    const [error, setError] = useState();
+    const [loading, setLoding] = useState(false)
+
+    async function handleUpload() {
+        setError(null)
+        if (formData.imgUrls.length < 6) {
+            setLoding(true)
+            try {
+                const response = await supabase
+                    .storage
+                    .from('Images_assets')
+                    .upload(`listing_images/${image.name + new Date().toUTCString()}`, image, {
+                        cacheControl: '3600',
+                        upsert: false
+                    })
+
+                if (response.error) {
+                    setError(response.error.message)
+                    setLoding(false)
+                } else {
+                    const { data } = supabase
+                        .storage
+                        .from('Images_assets')
+                        .getPublicUrl(response.data.path)
+                    //setImages([...images, data.publicUrl]);
+                    setFormData({ ...formData, imgUrls: formData.imgUrls.concat(data.publicUrl) })
+                    setLoding(false)
+                }
+            } catch (error) {
+                setError(error.message)
+                console.log(error)
+                setLoding(false)
+            }
+        } else {
+            setError('Cannot upload more than 6')
+        }
+    }
 
     return (
         <div>
@@ -64,8 +116,25 @@ const CreateListing = () => {
                 <div className="flex flex-col flex-1 gap-2">
                     <p className="font-bold">Images: <span className="text-gray-500 font-normal">The first image will be cover (max 6)</span></p>
                     <div className="flex gap-2">
-                        <input className="p-3 border rounded w-full" type="file" />
-                        <button type="button" className="p-3 border text-green-600 rounded-lg border-green-600">Upload</button>
+                        <input onChange={(e) => { setImage(e.target.files[0]) }} className="p-3 border rounded w-full" accept='Image/*' required type="file" />
+                        <button onClick={handleUpload} type="button" className="p-3 border text-green-600 rounded-lg border-green-600">
+                            {
+                                loading ? 'Updating...' : 'Upload'
+                            }
+                        </button>
+                    </div>
+                    <p className='text-red-600 text-sm'>{error}</p>
+                    <div className='flex flex-col gap-2 max-h-60 overflow-auto'>
+                        {formData.imgUrls && formData.imgUrls.map((image, index) => {
+                            return <div key={index} className='flex justify-between p-2 border'>
+                                <img className='w-20 h-14 object-contain' src={image} alt="" />
+                                <button
+                                    type='button'
+                                    onClick={() => {
+                                        setFormData({ ...formData, imgUrls: formData.imgUrls.filter(imageDelete => imageDelete != image) })
+                                    }} className='text-red-600 uppercase'>Delete</button>
+                            </div>
+                        })}
                     </div>
                     <button className="bg-slate-600 p-3 uppercase hover:opacity-90 rounded-lg text-white">Create Listing</button>
                 </div>
