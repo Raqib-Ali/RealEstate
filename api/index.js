@@ -23,7 +23,7 @@ app.use(cors());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user' , userRotes);
-app.use('/api/listing', listingRoutes) 
+app.use('/api/listing', listingRoutes);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;

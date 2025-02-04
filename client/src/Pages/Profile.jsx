@@ -127,6 +127,26 @@ function Profile() {
         }
     }
 
+    const handleDeleteListing = async (event, id) => {
+        event.stopPropagation();
+       try{
+          const res = await fetch(`/api/listing/delete/${id}`, {
+            method: 'DELETE'
+          })
+          const data = await res.json()
+
+          if(data.success == false){
+           console.log(data.message)
+           return;
+        }
+
+         console.log(data);
+         showListing();
+       }catch(error){
+         console.log(error.message);
+       }
+    }
+
     useEffect(()=>{
        setForm({
         ...formData,
@@ -134,11 +154,11 @@ function Profile() {
        })
     },[])
 
-    console.log(listings)
+   
     return (
         <div className="mx-auto max-w-lg p-2">
             <h1 className="text-center text-3xl font-bold m-4">Profile</h1>
-            <form onSubmit={(e) => { handleSubmit(e) }} className="flex flex-col gap-4 mt-5">
+            <form onSubmit={(e) => { handleSubmit(e) }} className="flex flex-col gap-3 mt-5">
                 <input onChange={(e) => {
                     handleImageChange(e);
 
@@ -171,21 +191,22 @@ function Profile() {
              
             {
                 
-                (listings.length > 1) && <div>
+                (listings.length > 0) && <div>
                     <h1 className="text-2xl font-semibold text-center m-10">Your Listings</h1>
 
                     <div className="flex flex-col gap-2">
                         {
-                            listings.map(listing => <div key={listing.id} className="">
-                                <Link className="flex justify-between items-center border p-2" to={`/listings/${listing._id}`}>
-                                <img className="h-10 object-contain" src={listing.imgUrls[0]} alt="" />
-                                <p>{listing.name}</p>
+                            listings.map(listing => <div key={listing._id} className="flex justify-between items-center border p-2" >
+                                <Link to={`/listings/${listing._id}`}><img className="h-10 object-contain" src={listing.imgUrls[0]} alt="" /></Link>
+                                <Link to={`/listings/${listing._id}`}><p className="hover:underline">{listing.name}</p></Link>
                                 <div className="flex flex-col">
-                                    <button className="uppercase text-red-600">Delete</button>
-                                    <button className="uppercase text-green-600">Edit</button>
+                                    <button onClick={(e)=>{handleDeleteListing(e, listing._id)}} className="uppercase text-red-600">Delete</button>
+                                   <Link to={`/update/${listing._id}`}>
+                                      <button className="uppercase text-green-600">Edit</button>
+                                   </Link>
                                 </div>
-                                </Link>
-                            </div> )
+                                </div>
+                            )
                         }
                     </div>
                 </div>
