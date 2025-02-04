@@ -9,6 +9,10 @@ const listingschema = mongoose.Schema({
         type: String,
         required: true
     },
+    imgUrls:{
+        type: Array,
+        required: true
+    },
     address:{
         type: String,
         required: true
@@ -34,6 +38,10 @@ const listingschema = mongoose.Schema({
         required: true
     },
     type:{
+        type: String,
+        required: true
+    },
+    userRef:{
         type: String,
         required: true
     }

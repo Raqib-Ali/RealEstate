@@ -24,6 +24,7 @@ function Profile() {
     }
 
     const uploadImage = async () => {
+        if(!file) return setImgError('You must choose an image.');
         try {
             setImgError(null);
             const response = await supabase
@@ -61,7 +62,6 @@ function Profile() {
             },
             body: JSON.stringify(formData)
         })
-        console.log(formData);
 
         const data = await result.json()
 
@@ -71,7 +71,7 @@ function Profile() {
         }
 
         dispatch(updateSuccess(data));
-        console.log(data)
+        console.log('updated', data)
     }
 
     const handleDeleteUser = async () => {
@@ -108,6 +108,13 @@ function Profile() {
         }
     }
 
+    useEffect(()=>{
+       setForm({
+        ...formData,
+        photo: currentUser?.photo
+       })
+    },[])
+
 
     return (
         <div className="mx-auto max-w-lg p-2">
@@ -123,15 +130,15 @@ function Profile() {
                     accept="image/*"
                     ref={ref}
                     type="file" />
-                <img onClick={() => { ref.current.click() }} src={formData ? formData.photo : (currentUser?.photo)} className="h-24 w-24 mb-3 rounded-full border self-center cursor-pointer hover:scale-105 transition-all delay-200" alt="" />
+                <img onClick={() => { ref.current.click() }} src={formData ? formData.photo : (currentUser?.photo)} className="h-28 w-28 rounded-full border self-center cursor-pointer hover:scale-105 transition-all delay-200" alt="" />
                 <p className="text-red-600">{imgError}</p>
-                <button className="bg-slate-400 p-2 rounded-lg uppercase text-white" type="button" onClick={uploadImage}>upload image</button>
+                <button type='button' className="bg-slate-300 p-2 rounded-lg uppercase text-slate-700 hover:shadow-md" onClick={uploadImage}>upload image</button>
                 <input className="p-3 rounded-lg border" id="username" placeholder="Username" type="text" onChange={(e) => { handleChange(e) }} defaultValue={currentUser?.username} />
                 <input className="p-3 rounded-lg border" id="email" placeholder="Email" type="email" onChange={(e) => { handleChange(e) }} defaultValue={currentUser?.email} />
                 <input className="p-3 rounded-lg border" id="password" onChange={(e) => { handleChange(e) }} placeholder="Password" type="password" />
-                <button disabled={loading} className="p-3 rounded-lg bg-slate-600 text-white uppercase">
+                <button disabled={loading} className="p-3 rounded-lg bg-slate-600 text-white uppercase hover:opacity-90 disabled:opacity-90 ">
                     {
-                        (loading) ? "Loading..." : "Update"
+                        (loading) ? "Loading ..." : "Update"
                     }
                 </button>
                 <Link to={'/createListing'} className="uppercase bg-green-600 p-3 rounded-lg text-center text-white">Create listing</Link>
