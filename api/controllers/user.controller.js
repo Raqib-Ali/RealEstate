@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import { errorHandler } from "../util.js/error.js"
 import bcryptjs from "../../node_modules/bcrypt/bcrypt.js"
+import Listing from "../models/listing.model.js";
 
 export const test = (req, res) => {
     res.send('user route')
@@ -60,4 +61,15 @@ export const SignOutUser = async (req, res, next) => {
         next(error);
     }
     
+}
+
+export const showListing = async (req, res, next) => {
+    if(req.user.id !== req.params.id) return next(errorHandler(404, 'You can only see your own listings')); 
+
+    try{
+       const response = await Listing.find({userRef: req.params.id})
+       res.status(200).json(response);
+    }catch(error){
+        next(error);
+    }
 }

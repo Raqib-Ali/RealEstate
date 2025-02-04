@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateStart, updateSuccess, updateFailure, deleteStart, deleteFailure, deletesuccess, signOutStart, signOutFailure, signOutSuccess } from "../redux/user/userSlice";
-import { Link } from "react-router-dom";
+import { Link, Links } from "react-router-dom";
 import { supabase } from '../suprabase';
 
 function Profile() {
@@ -11,6 +11,8 @@ function Profile() {
     const [formData, setForm] = useState();
     const [file, setFile] = useState();
     const ref = useRef();
+    const [showListingError, setListingError] = useState(null);
+    const [listings, setListings] = useState([]);
 
     const handleChange = (e) => {
         setForm({
@@ -108,6 +110,23 @@ function Profile() {
         }
     }
 
+    const showListing = async () => {
+        try{
+            setListingError(null);
+            const res = await fetch(`/api/user/listings/${currentUser._id}`);
+            const data = await res.json();
+
+            if(data.success == false){
+                setListingError(data.message);
+                return;
+            }
+
+            setListings(data);
+        }catch(error){
+            setListingError(error.message)
+        }
+    }
+
     useEffect(()=>{
        setForm({
         ...formData,
@@ -115,7 +134,7 @@ function Profile() {
        })
     },[])
 
-
+    console.log(listings)
     return (
         <div className="mx-auto max-w-lg p-2">
             <h1 className="text-center text-3xl font-bold m-4">Profile</h1>
@@ -148,6 +167,29 @@ function Profile() {
                 <span onClick={handleSignOut} className="text-red-600 cursor-pointer">Sign out</span>
             </div>
             <p className="text-red-600 mt-2">{error}</p>
+            <p onClick={showListing} className='text-green-600 text-center mt-4 font-semibold cursor-pointer'>Show Listing</p>
+             
+            {
+                
+                (listings.length > 1) && <div>
+                    <h1 className="text-2xl font-semibold text-center m-10">Your Listings</h1>
+
+                    <div className="flex flex-col gap-2">
+                        {
+                            listings.map(listing => <div key={listing.id} className="">
+                                <Link className="flex justify-between items-center border p-2" to={`/listings/${listing._id}`}>
+                                <img className="h-10 object-contain" src={listing.imgUrls[0]} alt="" />
+                                <p>{listing.name}</p>
+                                <div className="flex flex-col">
+                                    <button className="uppercase text-red-600">Delete</button>
+                                    <button className="uppercase text-green-600">Edit</button>
+                                </div>
+                                </Link>
+                            </div> )
+                        }
+                    </div>
+                </div>
+            }
         </div>
 
     )
