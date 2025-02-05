@@ -44,6 +44,10 @@ const listingschema = mongoose.Schema({
     userRef:{
         type: String,
         required: true
+    },
+    offer:{
+        type: Boolean,
+        required: true
     }
 }, { timestamps: true});
 
