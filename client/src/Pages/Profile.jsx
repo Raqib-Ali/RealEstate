@@ -197,8 +197,8 @@ function Profile() {
                     <div className="flex flex-col gap-2">
                         {
                             listings.map(listing => <div key={listing._id} className="flex justify-between items-center border p-2" >
-                                <Link to={`/listings/${listing._id}`}><img className="h-10 object-contain" src={listing.imgUrls[0]} alt="" /></Link>
-                                <Link to={`/listings/${listing._id}`}><p className="hover:underline">{listing.name}</p></Link>
+                                <Link to={`/listing/${listing._id}`}><img className="h-10 object-contain" src={listing.imgUrls[0]} alt="" /></Link>
+                                <Link to={`/listing/${listing._id}`}><p className="hover:underline">{listing.name}</p></Link>
                                 <div className="flex flex-col">
                                     <button onClick={(e)=>{handleDeleteListing(e, listing._id)}} className="uppercase text-red-600">Delete</button>
                                    <Link to={`/update/${listing._id}`}>
