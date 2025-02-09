@@ -37,6 +37,10 @@ const listingschema = mongoose.Schema({
         type: Boolean,
         required: true
     },
+    furnished:{
+        type: Boolean,
+        required: true
+    },
     type:{
         type: String,
         required: true

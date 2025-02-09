@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Navigation, A11y } from 'swiper/modules';
-import { FaAddressBook, FaBath, FaBed, FaChair, FaLandmark, FaLocationArrow, FaMap, FaParking } from "react-icons/fa";
+import { FaBath, FaBed, FaChair, FaLocationArrow, FaParking } from "react-icons/fa";
 
 
 import { Swiper, SwiperSlide } from 'swiper/react';
