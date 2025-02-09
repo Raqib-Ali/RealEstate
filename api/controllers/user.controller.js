@@ -9,7 +9,7 @@ export const test = (req, res) => {
 
 export const updateUser = async (req, res, next) => {
 
-    if (req.user.id !== req.params.id) return next(errorHandler(403, 'You can only Update your own account')); 
+    if (req.user.id !== req.params.id) return next(errorHandler(403, 'You can only Update your own account'));
 
     try {
 
@@ -18,15 +18,15 @@ export const updateUser = async (req, res, next) => {
         }
 
         const updatedUser = await User.findByIdAndUpdate(req.params.id, {
-            $set:{
+            $set: {
                 username: req.body.username,
                 email: req.body.email,
                 password: req.body.password,
                 photo: req.body.photo
             }
-        }, {new: true})
+        }, { new: true })
 
-        const {password, ...rest} = updatedUser._doc     
+        const { password, ...rest } = updatedUser._doc
         res.status(200).json(rest);
         console.log("User is updated!")
     } catch (error) {
@@ -40,7 +40,7 @@ export const updateUser = async (req, res, next) => {
 
 export const deleteUser = async (req, res, next) => {
 
-    if (req.user.id !== req.params.id) return next(errorHandler(404, 'You can only delete your own account')); 
+    if (req.user.id !== req.params.id) return next(errorHandler(404, 'You can only delete your own account'));
 
     try {
         await User.findByIdAndDelete(req.params.id);
@@ -60,16 +60,28 @@ export const SignOutUser = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-    
+
 }
 
 export const showListing = async (req, res, next) => {
-    if(req.user.id !== req.params.id) return next(errorHandler(404, 'You can only see your own listings')); 
+    if (req.user.id !== req.params.id) return next(errorHandler(404, 'You can only see your own listings'));
 
-    try{
-       const response = await Listing.find({userRef: req.params.id})
-       res.status(200).json(response);
-    }catch(error){
+    try {
+        const response = await Listing.find({ userRef: req.params.id })
+        res.status(200).json(response);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getUser = async (req, res, next) => {
+    try {
+        const user = await User.findOne({ _id: req.params.id });
+        if (!user) return next(errorHandler(400, 'User not found.'));
+
+        const { password: pass, ...rest } = user._doc
+        res.status(200).json(rest);
+    } catch (error) {
         next(error);
     }
 }
