@@ -28,7 +28,7 @@ function Header() {
 
     useEffect(()=>{
         const url = new URLSearchParams(location.search)
-        const searchTerm = url.get('searchTerm');
+        const searchTerm = url.get('searchTerm') || search;
 
         setSearch(searchTerm);
     },[location.search]);
