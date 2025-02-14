@@ -75,7 +75,7 @@ const UpdateListing = () => {
             if (e.target.id == 'type') {
                 setFormData({
                     ...formData,
-                    [e.target.id]: (formData.type == "rent") ? 'sell' : "rent"
+                    [e.target.id]: (formData.type == "rent") ? 'sale' : "rent"
                 })
             } else {
                 setFormData({
@@ -162,8 +162,8 @@ const UpdateListing = () => {
                     <input required className="p-3 rounded-lg " type="text" placeholder="Address" id="address" value={formData?.address} onChange={(e) => { handleChange(e) }} />
                     <div className="flex flex-wrap gap-5">
                         <div className="flex gap-2 ">
-                            <input className="w-5" type="checkbox" id="type" onChange={(e) => { handleChange(e) }} checked={formData?.type == 'sell'} />
-                            <span>Sell</span>
+                            <input className="w-5" type="checkbox" id="type" onChange={(e) => { handleChange(e) }} checked={formData?.type == 'sale'} />
+                            <span>sale</span>
                         </div>
                         <div className="flex gap-2 ">
                             <input className="w-5" type="checkbox" id="type" onChange={(e) => { handleChange(e) }} checked={formData?.type == 'rent'} />

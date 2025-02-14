@@ -5,18 +5,20 @@ import { ListingItem } from "../Components/ListingItem";
 export const Search = () => {
 
     const [sidebarFrom, setsidebar] = useState({
-        searchTerm: '',
+        searchTerm: null,
         type: 'all',
         offer: false,
         parking: true,
         furnished: false,
         sort: 'createdAt',
-        order: 'asc'
+        order: 'asc',
+        startIndex: 0
     })
     const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [listing, setListing] = useState([]);
+    const [showMore, setShowMore] = useState(false);
 
 
     const handlechange = (e) => {
@@ -80,6 +82,7 @@ export const Search = () => {
         const sort = url.get('sort') || sidebarFrom.sort;
         const order = url.get('order') || sidebarFrom.order;
         const type = url.get('type') || sidebarFrom.type;
+        const startIndex = url.get('startIndex') || sidebarFrom.startIndex;
 
         const queryString = url.toString()
 
@@ -91,11 +94,13 @@ export const Search = () => {
             furnished: (furnished === "true") ? true : false,
             offer: (offer === "true") ? true : false,
             order,
-            sort
+            sort,
+            startIndex
         })
 
         const getListing = async () => {
             try {
+                setShowMore(false);
                 setError(null);
                 setLoading(true);
                 const response = await fetch(`/api/listing/get?${queryString}`);
@@ -105,6 +110,10 @@ export const Search = () => {
                     setError(data.message);
                     setLoading(false)
                     return;
+                }
+
+                if (data.length > 8) {
+                    setShowMore(true);
                 }
                 setListing(data);
                 setLoading(false)
@@ -116,9 +125,44 @@ export const Search = () => {
         getListing();
     }, [location.search])
 
+    const handleShowMore = async () => {
+
+        const index = listing.length;
+        const url = new URLSearchParams(location.search);
+        url.set('startIndex', index);
+
+        const queryString = url.toString();
+
+       
+        try {
+            setShowMore(false);
+            setError(null);
+            const response = await fetch(`/api/listing/get?${queryString}`);
+            const data = await response.json();
+
+            if (data.success === false) {
+                setError(data.message);
+                setLoading(false);
+                return;
+            }
+
+            setListing([
+                ...listing,
+                ...data
+            ]);
+
+            if (data.length > 8) {
+                setShowMore(true);
+            }
+ 
+        } catch (error) {
+            setError(error.message);
+        }
+    }
+
     return <div className="">
         <div className="flex flex-col md:flex-row">
-            <div className="p-6 h-fit md:h-screen border-r-2">
+            <div className="p-6 border-r-2">
                 <form onSubmit={(e) => { handleSubmit(e) }} className="flex flex-col gap-6">
                     <div className="flex flex-wrap gap-3 items-center">
                         <span className="font-semibold">Search:</span>
@@ -169,7 +213,7 @@ export const Search = () => {
                 </form>
             </div>
 
-            <div className=" flex-1">
+            <div className="flex-1">
                 <div className="border-b-2 p-3">
                     <h1 className="text-3xl font-semibold">Listings:</h1>
                 </div>
@@ -179,6 +223,9 @@ export const Search = () => {
                     {loading && 'Loading...'}
                     {!loading && listing && listing.map(item => <ListingItem key={item._id} listing={item} />)}
                 </div>
+                {
+                    showMore && <p onClick={handleShowMore} className="text-green-600 text-center cursor-pointer hover:underline p-2">Show more</p>
+                }
             </div>
         </div>
 
