@@ -30,6 +30,7 @@ const CreateListing = () => {
     });
     const [imgError, setImgError] = useState();
     const [error, setError] = useState();
+    const [uploaded, setUploaded] = useState(null);
     const [loading, setLoding] = useState(false)
     const [imgLoading, setImgLoding] = useState(false)
     const navigate = useNavigate();
@@ -148,7 +149,7 @@ const CreateListing = () => {
                 regularPrice: 50,
                 offerPrice: 0
             });
-           // navigate(`/listing/${data._id}`)
+            navigate(`/listing/${data._id}`)
            
         } catch (error) {
             setError(error.message);
@@ -247,6 +248,7 @@ const CreateListing = () => {
                         }
                     </button>
                     <p className='text-sm text-red-600 mt-2'>{error}</p>
+                    <p className='text-sm text-green-600 mt-2'>{uploaded}</p>
                 </div>
             </form>
             
