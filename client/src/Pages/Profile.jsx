@@ -120,11 +120,17 @@ function Profile() {
                 return;
             }
 
+            if(data.length == 0){
+                dispatch(updateFailure('No listing found!'));
+            }
+
             setListings(data);
         }catch(error){
             dispatch(updateFailure(error.message));
         }
     }
+
+    //console.log(listings);
 
     const handleDeleteListing = async (event, id) => {
         event.stopPropagation();
@@ -187,7 +193,7 @@ function Profile() {
                 <span onClick={handleSignOut} className="text-red-600 cursor-pointer">Sign out</span>
             </div>
             <p className="text-red-600 mt-2">{error}</p>
-            <p onClick={showListing} className='text-green-600 text-center mt-4 font-semibold cursor-pointer'>Show Listing</p>
+            <button onClick={showListing} className='text-green-600 mt-4 text-center font-semibold w-full'>Show Listing</button>
              
             {
                 

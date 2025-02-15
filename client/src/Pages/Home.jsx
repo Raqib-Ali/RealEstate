@@ -91,7 +91,7 @@ function Home() {
                         <Link to={'/search?sort=createdAt&order=desc'} className="text-blue-700 font-semibold text-lg">Show more...</Link>
                     </div>
 
-                    <div className=" flex flex-wrap gap-6">
+                    <div className="grid grid-cols-2 md:flex md:flex-wrap gap-6">
                         {
                             offerListings && offerListings.length > 0 && offerListings.map(listing => <ListingItem listing={listing} key={listing._id} />)
                         }
