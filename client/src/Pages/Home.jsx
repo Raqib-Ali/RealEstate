@@ -81,13 +81,13 @@ function Home() {
 
             </Swiper>
 
-            {/* Recents listings */}
+            {/* Offer listings */}
 
             {
                 offerListings && offerListings.length > 0 && <div className="flex flex-col max-w-6xl mx-auto gap-4 p-6 mt-6">
 
                     <div className=" flex flex-col gap-1">
-                        <h1 className="text-slate-700 text-4xl font-bold">Recent offers</h1>
+                        <h1 className="text-slate-700 text-4xl font-bold">Places On Offer</h1>
                         <Link to={'/search?sort=createdAt&order=desc'} className="text-blue-700 font-semibold text-lg">Show more...</Link>
                     </div>
 
@@ -99,13 +99,13 @@ function Home() {
                 </div>
             }
 
-            {/* Recets places on Offer */}
+            {/* Recets places */}
 
             {
                 recentListings && recentListings.length > 0 && <div className="flex flex-col max-w-6xl mx-auto gap-4 p-6">
 
                     <div className="flex flex-col gap-1">
-                        <h1 className="text-slate-700 text-4xl font-bold">Places on offer</h1>
+                        <h1 className="text-slate-700 text-4xl font-bold">Recent Uploads</h1>
                         <Link to={'/search?offer=true'} className="text-blue-700 font-semibold text-lg">Show more...</Link>
                     </div>
 

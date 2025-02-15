@@ -134,6 +134,20 @@ const CreateListing = () => {
 
             console.log(data)
             setLoding(false);
+            setFormData({
+                imgUrls: [],
+                name: '',
+                description: '',
+                address: '',
+                type: "rent",
+                parking: false,
+                furnished: true,
+                offer: false,
+                bedrooms: 1,
+                bathrooms: 1,
+                regularPrice: 50,
+                offerPrice: 0
+            });
            // navigate(`/listing/${data._id}`)
            
         } catch (error) {
