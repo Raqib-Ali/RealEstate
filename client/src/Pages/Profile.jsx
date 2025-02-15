@@ -209,6 +209,7 @@ function Profile() {
                             )
                         }
                     </div>
+                    <p className="text-red-600 text-sm">{showListingError}</p>
                 </div>
             }
         </div>

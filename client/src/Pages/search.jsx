@@ -5,7 +5,7 @@ import { ListingItem } from "../Components/ListingItem";
 export const Search = () => {
 
     const [sidebarFrom, setsidebar] = useState({
-        searchTerm: null,
+        searchTerm: '',
         type: 'all',
         offer: false,
         parking: true,
