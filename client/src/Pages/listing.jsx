@@ -110,7 +110,7 @@ export const Listing = () => {
 
                     {/* Contact */}
                     {
-                        currentUser && currentUser._id == listing.userRef && <button hidden={contact} onClick={() => { setContact(true) }} className="bg-slate-700 p-3 text-white rounded-lg uppercase hover:opacity-85">
+                        currentUser && currentUser._id != listing.userRef && <button hidden={contact} onClick={() => { setContact(true) }} className="bg-slate-700 p-3 text-white rounded-lg uppercase hover:opacity-85">
                             Contact Landlord
                         </button>
                     }
