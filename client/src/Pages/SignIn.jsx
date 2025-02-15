@@ -1,7 +1,7 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate,  } from "react-router-dom";
-import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSlice";
+import { signInFailure, signInStart, signInSuccess, updateFailure } from "../redux/user/userSlice";
 import { OAuth } from "../Components/OAuth";
 
 function SignIn() {
@@ -41,6 +41,10 @@ function SignIn() {
     dispatch(signInSuccess(data))
     navigate('/')
   }
+
+  useEffect(()=>{
+     dispatch(updateFailure(null));
+  }, []);
 
   return <>
     <div className="mx-auto max-w-lg p-2">

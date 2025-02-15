@@ -11,7 +11,6 @@ function Profile() {
     const [formData, setForm] = useState();
     const [file, setFile] = useState();
     const ref = useRef();
-    const [showListingError, setListingError] = useState(null);
     const [listings, setListings] = useState([]);
 
     const handleChange = (e) => {
@@ -112,18 +111,18 @@ function Profile() {
 
     const showListing = async () => {
         try{
-            setListingError(null);
+            dispatch(updateFailure(null));
             const res = await fetch(`/api/user/listings/${currentUser._id}`);
             const data = await res.json();
 
-            if(data.success == false){
-                setListingError(data.message);
+            if(data.success === false){
+                dispatch(updateFailure(data.message));
                 return;
             }
 
             setListings(data);
         }catch(error){
-            setListingError(error.message)
+            dispatch(updateFailure(error.message));
         }
     }
 
@@ -151,7 +150,8 @@ function Profile() {
        setForm({
         ...formData,
         photo: currentUser?.photo
-       })
+       });
+      dispatch(updateFailure(null));
     },[])
 
    
@@ -209,9 +209,10 @@ function Profile() {
                             )
                         }
                     </div>
-                    <p className="text-red-600 text-sm">{showListingError}</p>
+                    
                 </div>
             }
+            
         </div>
 
     )

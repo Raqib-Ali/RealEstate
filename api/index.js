@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.route.js";
 import listingRoutes from './routes/listing.route.js'
 import cors from 'cors'
 import cookieParser from "cookie-parser";
+import path from 'path';
 
 
 dotenv.config();  
@@ -16,6 +17,8 @@ mongoose.connect(process.env.MONGO).then(()=>{
     console.log(err)
 });
 
+const __dirname = path.resolve();
+
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -24,6 +27,12 @@ app.use(cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/user' , userRotes);
 app.use('/api/listing', listingRoutes);
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+ res.sendFile(path.join(__dirname, '/client/build/index.html'));
+})
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;

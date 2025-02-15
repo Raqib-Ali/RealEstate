@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 
 export const ListingItem = ({ listing }) => {
 
-    return <div className="border shadow-md rounded-lg overflow-hidden w-[320px]">
+    return <div className="border shadow-md rounded-lg overflow-hidden w-[250px]">
         <Link to={`/listing/${listing._id}`}>
             <img className="hover:scale-105 h-40 w-full transition-all duration-500" src={listing.imgUrls[0]} alt="" />
             <div className="p-4 flex flex-col gap-1">

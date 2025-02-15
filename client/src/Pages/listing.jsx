@@ -81,7 +81,7 @@ export const Listing = () => {
 
                 </Swiper>
 
-                <div className="max-w-3xl mx-auto flex flex-col gap-4 mt-4 p-2">
+                <div className="max-w-3xl mx-auto flex flex-col gap-4 mt-4 p-3">
 
                     {/* Title */}
                     {listing.name && <h1 className="text-2xl font-semibold">{listing.name} - {(listing.type == 'rent') ? <span>${listing.regularPrice}/month</span> : <span>${listing.regularPrice}</span>}</h1>

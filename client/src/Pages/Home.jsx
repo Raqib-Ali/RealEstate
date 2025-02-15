@@ -66,7 +66,6 @@ function Home() {
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true }}
                 onSwiper={(swiper) => console.log(swiper)}
-                onSlideChange={() => console.log('slide change')}
                 autoplay={{
                     delay: 2500,
                     disableOnInteraction: false,
@@ -85,7 +84,7 @@ function Home() {
             {/* Recents listings */}
 
             {
-                recentListings && recentListings.length > 0 && <div className="flex flex-col gap-4 p-6">
+                offerListings && offerListings.length > 0 && <div className="flex flex-col max-w-6xl mx-auto gap-4 p-6 mt-6">
 
                     <div className=" flex flex-col gap-1">
                         <h1 className="text-slate-700 text-4xl font-bold">Recent offers</h1>
@@ -94,16 +93,16 @@ function Home() {
 
                     <div className=" flex flex-wrap gap-6">
                         {
-                            recentListings && recentListings.length > 0 && recentListings.map(listing => <ListingItem listing={listing} key={listing._id} />)
+                            offerListings && offerListings.length > 0 && offerListings.map(listing => <ListingItem listing={listing} key={listing._id} />)
                         }
                     </div>
                 </div>
             }
 
-            {/* Rects places on Offer */}
+            {/* Recets places on Offer */}
 
             {
-                offerListings && offerListings.length > 0 && <div className="flex flex-col gap-4 p-6">
+                recentListings && recentListings.length > 0 && <div className="flex flex-col max-w-6xl mx-auto gap-4 p-6">
 
                     <div className="flex flex-col gap-1">
                         <h1 className="text-slate-700 text-4xl font-bold">Places on offer</h1>
@@ -112,17 +111,17 @@ function Home() {
 
                     <div className="flex flex-wrap gap-6">
                         {
-                            offerListings && offerListings.length > 0 && offerListings.map(listing => <ListingItem listing={listing} key={listing._id} />)
+                            recentListings && recentListings.length > 0 && recentListings.map(listing => <ListingItem listing={listing} key={listing._id} />)
                         }
                     </div>
                 </div>
             }
 
 
-            {/* Recent places for rent */}
+            {/* places for rent */}
 
             {
-                rentListings && rentListings.length > 0 && <div className="flex flex-col gap-4 p-6">
+                rentListings && rentListings.length > 0 && <div className="flex flex-col max-w-6xl mx-auto gap-4 p-6">
 
                     <div className="flex flex-col gap-1">
                         <h1 className="text-slate-700 text-4xl font-bold">Recent places for rent</h1>
