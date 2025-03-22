@@ -149,7 +149,7 @@ const CreateListing = () => {
                 regularPrice: 50,
                 offerPrice: 0
             });
-            navigate(`/listing/${data._id}`)
+            navigate(`/listing/${data._id}`);
            
         } catch (error) {
             setError(error.message);
